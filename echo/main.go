@@ -1,26 +1,14 @@
-package echo
+package main
 
 import (
     "net/http"
-    "net/http/httputil"
     "fmt"
     "log"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    dump, err := httputil.DumpRequest(r, true)
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
-    fmt.Println(dump)
-
-    w.Header().Add("Set-Cookie", "VISIT=TRUE")
-    if _, ok := r.Header["Cookie"]; ok {
-        fmt.Fprintf(w, "<http><body>2回目の訪問</body></http>¥n")
-    } else {
-        fmt.Fprintf(w, "<http><body>初訪問</body></http>¥n")
-    }
+    fmt.Printf("URL: %s\n", r.URL.String())
+    fmt.Printf("Query: %v\n", r.URL.Query())
 }
 
 func main() {
